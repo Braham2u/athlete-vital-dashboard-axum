@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile.axum
     container_name: app
-        environment:
+    environment:
       APP__APPLICATION_PORT: ${APP__APPLICATION_PORT}
 
       APP__DATABASE__DATABASE_NAME: ${APP__DATABASE__DATABASE_NAME}
@@ -39,3 +39,4 @@ services:
 
 volumes:
   postgres_data:
+
