@@ -2,36 +2,22 @@
   "name": "25W INCOSENSE",
   "dockerComposeFile": ["docker-compose.yml"],
   "service": "app",
-
-  "remoteEnv": {
-    // Database & app config from Codespace secrets or .env
-    "APP__APPLICATION_PORT": "${APP__APPLICATION_PORT}",
-    "APP__DATABASE__DATABASE_NAME": "${APP__DATABASE__DATABASE_NAME}",
-    "APP__DATABASE__HOST": "${APP__DATABASE__HOST}",
-    "APP__DATABASE__PASSWORD": "${APP__DATABASE__PASSWORD}",
-    "APP__DATABASE__PORT": "${APP__DATABASE__PORT}",
-    "APP__DATABASE__USERNAME": "${APP__DATABASE__USERNAME}",
-
-    // Ensure Cargo uses workspace-local cache (reproducibility)
-    "CARGO_HOME": "/workspace/.cargo"
-  },
-
-  "postCreateCommand": "docker compose pull || docker compose build",
-  "postStartCommand": "docker compose up -d",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 
   "forwardPorts": [8080, 5432],
 
+  "portsAttributes": {
+    "8080": { "label": "Backend (Axum)", "onAutoForward": "openPreview" },
+    "5432": { "label": "Postgres", "onAutoForward": "ignore" }
+  },
+
+  "remoteEnv": {
+    "CARGO_HOME": "/workspaces/${localWorkspaceFolderBasename}/.cargo"
+  },
+
   "customizations": {
     "codespaces": {
-      "openFiles": ["src/main.rs"],
-      "prebuilds": {
-        "enabled": true,
-        "config": {
-          "pull": true,
-          "installExtensions": true,
-          "useCachedVolumes": true
-        }
-      }
+      "openFiles": ["src/main.rs"]
     },
     "vscode": {
       "extensions": [
@@ -39,14 +25,14 @@
         "tamasfe.even-better-toml",
         "ms-azuretools.vscode-docker",
         "mhutchie.git-graph"
-      ]
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.formatOnSave": true,
+        "rust-analyzer.cargo.features": "all",
+        "rust-analyzer.check.command": "clippy"
+      }
     }
-  },
-
-  "settings": {
-    "terminal.integrated.defaultProfile.linux": "bash",
-    "editor.formatOnSave": true,
-    "rust-analyzer.cargo.features": "all",
-    "rust-analyzer.check.command": "clippy"
   }
 }
+
