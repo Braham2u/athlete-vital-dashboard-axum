@@ -1,6 +1,6 @@
 {
   "name": "25W INCOSENSE",
-  "dockerComposeFile": ["docker-compose.yml"],
+  "dockerComposeFile": ["../docker-compose.yml"],
   "service": "app",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 
