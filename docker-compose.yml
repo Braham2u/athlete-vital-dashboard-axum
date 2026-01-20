@@ -3,21 +3,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.axum
-    container_name: app
+    env_file:
+      - .env
     environment:
-      APP__APPLICATION_PORT: ${APP__APPLICATION_PORT}
-
-      APP__DATABASE__DATABASE_NAME: ${APP__DATABASE__DATABASE_NAME}
       APP__DATABASE__HOST: postgres
       APP__DATABASE__PORT: 5432
-      APP__DATABASE__USERNAME: ${APP__DATABASE__USERNAME}
-      APP__DATABASE__PASSWORD: ${APP__DATABASE__PASSWORD}
-
-      # Email settings (required so app does not crash)
-      APP__EMAIL__SENDER: ${APP__EMAIL__SENDER}
-      APP__EMAIL__SERVICE_URL: ${APP__EMAIL__SERVICE_URL}
-      APP__EMAIL__API_TOKEN: ${APP__EMAIL__API_TOKEN}
-
     depends_on:
       - postgres
     ports:
@@ -26,7 +16,8 @@ services:
 
   postgres:
     image: postgres:16-alpine
-    container_name: postgres
+    env_file:
+      - .env
     environment:
       POSTGRES_USER: ${APP__DATABASE__USERNAME}
       POSTGRES_PASSWORD: ${APP__DATABASE__PASSWORD}
@@ -39,4 +30,3 @@ services:
 
 volumes:
   postgres_data:
-
